@@ -6527,7 +6527,7 @@ menu
 	{
 		area 838 162 425 498
 		bam rgdobcg
-		sequence lua "rgUISkin"
+		sequence lua "RgUISkin"
 		scaleToClip
 	}
 	list
@@ -43484,7 +43484,7 @@ menu
 	{
 		on return
 		bam 'RGDMBUT1'
-		sequence lua "rgUISkin"
+		sequence lua "RgUISkin"
 		ScaleToClip
 		area 130 548 409 75
 		pad 10 8 10 8
@@ -43511,7 +43511,7 @@ menu
 	{
 		on escape
 		bam 'RGDMBUT1'
-		sequence lua "rgUISkin"
+		sequence lua "RgUISkin"
 		ScaleToClip
 		area 130 473 409 75
 		pad 10 8 10 8
