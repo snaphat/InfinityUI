@@ -6426,22 +6426,33 @@ menu
 	"
 		generateMegaCredits()
 	"
-	label
+	text
 	{
-		area 0 0 1024 768
-		mosaic GUISMBM
+		area	0 0 768 768
+		bam 'rgdbcset'
+		sequence lua "RgUISkin"
+		ScaleToClip
+		frame 0
 	}
-	
+	text
+	{
+		area	597 0 768 768
+		bam 'rgdbcset'
+		sequence lua "RgUISkin"
+		ScaleToClip
+		frame 1
+	}
 	label
 	{
-		area 30 18 970 36
-		text "CREDITS_TITLE"
-		text style "title"
+		area		480 32 405 52
+		text lua "rgString('CREDITS_TITLE')"
+		text style 'rg_trajan'
+		align center center
 	}
 	
 	text
 	{
-		area 30 64 974 632
+		area 100 96 1166 556
 		text lua "megacredits"
 		scrollbar	'rgdscrl1'
 		scrollbar func "resetScrollbar"
@@ -6451,15 +6462,17 @@ menu
 	
 	button
 	{
-		area		774 706 230 40
-		bam			GUIBUTMT
-		sequence	6
-		text  "DONE_BUTTON"
-		text style "button"
+		area		457 662 428 70		
+		bam		rgdmbut2
+		sequence lua "RgUISkin"
+		ScaleToClip
+		pad 10 8 10 8
+		text lua "rgString('DONE_BUTTON')" -- Done
+		text style	"button"
 		action
 		"
-			Infinity_PopMenu();
-		"	
+			Infinity_PopMenu()
+		"
 	}
 }
 
@@ -6506,6 +6519,7 @@ menu
 		area	0 0 768 768
 		bam 'rgdbcset'
 		ScaleToClip
+		sequence lua "RgUISkin"
 		frame 0
 	}
 	text
@@ -6513,14 +6527,14 @@ menu
 		area	597 0 768 768
 		bam 'rgdbcset'
 		ScaleToClip
+		sequence lua "RgUISkin"
 		frame 1
 	}
 	label
 	{
 		area		480 32 405 52
-		text		"LANGUAGE_TITLE"
+		text lua "rgString('LANGUAGE_TITLE')"
 		text style 'rg_trajan'
-		text color '$'
 		align center center
 	}
 	label
@@ -6584,7 +6598,7 @@ menu
 	label
 	{
 		area		838 104 428 54
-		text lua 	"rgGetGameEngineString(71374,71374,102626,0)"
+		text lua 	"rgGetGameEngineString(32208,71374,102626,0)"
 		text style	"normal"
 		text align	center center
 		text color 	'$'
@@ -6605,6 +6619,7 @@ menu
 		on escape
 		area 1292 18 42 42
 		bam rgdbtcls
+		sequence lua "RgUISkin"
 		ScaleToClip
 		action
 		"
@@ -6634,8 +6649,9 @@ menu
 	button
 	{
 		area		838 660 428 70		
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
+		sequence lua "RgUISkin"
 		pad 10 8 10 8
 		text lua	"t('SAVE_BUTTON') .. ' & ' .. t('DONE_BUTTON')" -- Done
 		text style	"button"
@@ -7792,6 +7808,15 @@ function rgHotkeyButtonBackground()
 	return 'rgdslot' .. RgUISkin
 end
 
+function rgIsTabletRatio()
+	local w, h = Infinity_GetScreenSize()
+	if w < 1360 then
+		return true
+	else
+		return false
+	end
+end
+
 function rgHotkeyButtonRightClick()
 	if rgHotkeyButtonsUnlocked == 0 then
 		Infinity_PushMenu('RG_HOTKEY_BUTTONS')
@@ -8253,7 +8278,7 @@ menu
 	label
 	{
 		area 259 58 44 54
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam 'rgdslot1'
 		ScaleToClip
 		sequence lua "RgUISkin"
@@ -8261,7 +8286,7 @@ menu
 	label
 	{
 		area 303 58 44 54
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam 'rgdslot1'
 		ScaleToClip
 		sequence lua "RgUISkin"
@@ -8342,7 +8367,7 @@ menu
 	{
 		name 'rgRightSidebarGoldernButton4'
 		area 261 65 40 40
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam lua "rgGetActionbarButtonBam()"
 		sequence 4
 		tooltip lua "getTooltipWithHotkey(5,rgGetGameEngineStringRef(24360,24360,16309,16309))"
@@ -8360,7 +8385,7 @@ menu
 	{
 		name 'rgRightSidebarGoldernButton5'
 		area 305 65 40 40
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam lua "rgGetActionbarButtonBam()"
 		sequence 5
 		tooltip lua "getTooltipWithHotkey(6,rgGetGameEngineStringRef(24357,24357,14930,14930))"
@@ -8684,6 +8709,7 @@ menu
 `
 	mouseOverPortrait = -1
 	draggedPortrait = nil
+	rgOpenConsole = 0
 	function swapPortraits(dest)
 		worldScreen:SwapPortraits(dest,draggedPortrait)
 		draggedPortrait = nil
@@ -9313,7 +9339,7 @@ menu
 	label
 	{
 		area -2 57 44 54
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam 'rgdslot1'
 		ScaleToClip
 		sequence lua "RgUISkin"
@@ -9321,7 +9347,7 @@ menu
 	label
 	{
 		area 42 57 44 54
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam 'rgdslot1'
 		ScaleToClip
 		sequence lua "RgUISkin"
@@ -9363,7 +9389,7 @@ menu
 	{
 		name 'rgRightSidebarGoldernButton7'
 		area 0 64 40 40
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam lua "rgGetActionbarButtonBam()"
 		sequence 8
 		ScaleToClip
@@ -9380,11 +9406,37 @@ menu
 			worldScreen:OnQuickSaveButtonClick(true)
 		"
 	}
+	
+	button
+	{
+		area 54 66 33 36
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == true"
+		tooltip lua "getPartyAITooltip()"
+		toggle aiButtonToggle
+		bam lua "rgGetActionbarButtonBam()"
+		sequence 11
+		ScaleToClip
+		clickable lua "sidebarsGreyed ~= 1"
+		action
+		"
+			game:ToggleAI()
+		"
+		actionAlt
+		"
+			if rgOpenConsole == 0 then
+				Infinity_PushMenu('cheatConsole')
+				rgOpenConsole = 1
+			else
+				Infinity_PopMenu('cheatConsole')
+				rgOpenConsole = 0
+			end
+		"
+	}
 	button
 	{
 		name 'rgRightSidebarGoldernButton8'
 		area 44 64 40 40
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		bam lua "rgGetActionbarButtonBam()"
 		sequence 9
 		ScaleToClip
@@ -9452,7 +9504,7 @@ menu
 	{
 		name 'rgRightSidebarGoldernButton11'
 		area 176 64 40 40
-		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0"
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == false"
 		tooltip lua "getPartyAITooltip()"
 		toggle aiButtonToggle
 		bam lua "rgGetActionbarButtonBam()"
@@ -9462,6 +9514,28 @@ menu
 		action
 		"
 			game:ToggleAI()
+		"
+	}
+	
+	button
+	{
+		name 'rgRightSidebarGoldernButton7'
+		area 176 64 40 40
+		enabled "worldScreen == e:GetActiveEngine() and RgIsModernHud == 0 and rgIsTabletRatio() == true"
+		bam lua "rgGetActionbarButtonBam()"
+		sequence 8
+		ScaleToClip
+		tooltip lua "getTooltipWithHotkey(28,rgGetGameEngineStringRef(31813,31813,74261,34763))"
+		tooltip force lua "sidebarForceTooltips == 1"
+		tooltip force top
+		clickable lua "sidebarsGreyed ~= 1"
+		action
+		"
+			worldScreen:OnQuickSaveButtonClick(false)
+		"
+		actionAlt
+		"
+			worldScreen:OnQuickSaveButtonClick(true)
 		"
 	}
 	button
@@ -9726,7 +9800,12 @@ function getTempHP()
 	return currentHP .. '/' .. maxHP
 end
 function shouldGreyOutInventory()
-	return characters[id].HP.current <= 0 or inventoryScreen:IsSpriteOrderable() == false
+	if RgInvPartyModeHover == 1 then
+		return characters[rgInvId].HP.current <= 0
+	else
+		return characters[rgInvId].HP.current <= 0 or inventoryScreen:IsSpriteOrderable() == false
+	end
+	
 end
 function getInventoryTHAC0()
 	local str = characters[rgInvId].THAC0.current
@@ -15097,7 +15176,7 @@ menu
 	{
 		name 'rgmainmenutitle'
 		ScaleToClip
-		area 981 48 510 131
+		area 1445 48 510 131
 		bam 'RGDTITLE'
 		frame lua "rgGetTitleFrame()"
 	}
@@ -15128,7 +15207,7 @@ menu
 			}
 		}
 		
-		area 10 556 340 300
+		area 10 530 340 300
 		name "rgCampaignList"
 		rowheight	100
 		hideHighlight
@@ -15197,7 +15276,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,1)"
 		ScaleToClip
-		area 1031 216 409 75
+		area 1495 216 409 75
 		pad 10 8 10 8
 		text style "button"
 		--text 9372
@@ -15213,7 +15292,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,2)"
 		ScaleToClip
-		area 1031 291 409 75
+		area 1495 291 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('NEW_GAME_BUTTON')"
@@ -15232,7 +15311,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,3)"
 		ScaleToClip
-		area 1031 366 409 75
+		area 1495 366 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('LOAD_GAME_BUTTON')"
@@ -15246,7 +15325,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,4)"
 		ScaleToClip
-		area 1031 441 409 75
+		area 1495 441 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('MULTIPLAYER_BUTTON')"
@@ -15263,7 +15342,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,5)"
 		ScaleToClip
-		area 1031 516 409 75
+		area 1495 516 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('OPTIONS_BUTTON')"
@@ -15279,7 +15358,7 @@ menu
 	button
 	{
 		name 'rgmainmenubutton6'
-		area 1031 591 409 75
+		area 1495 591 409 75
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,6)"
 		ScaleToClip
@@ -15309,7 +15388,7 @@ menu
 	label
 	{
 		name 'rgmainmenuversion'
-		area 1031 811 409 41
+		area 1495 785 409 41
 		text style "normal"
 		text align center center
 		text lua "CBaldurChitin:GetVersionString()"
@@ -15505,7 +15584,7 @@ menu
 	{
 		name 'rgmainmenutitleopt'
 		ScaleToClip
-		area 981 48 510 131
+		area 1445 48 510 131
 		bam 'RGDTITLE'
 		frame lua "rgGetTitleFrame()"
 	}
@@ -15516,7 +15595,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,1)"
 		ScaleToClip
-		area 1031 291 409 75
+		area 1495 291 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('LANGUAGE_BUTTON')"
@@ -15530,7 +15609,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,2)"
 		ScaleToClip
-		area 1031 366 409 75
+		area 1495 366 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('MOVIES_BUTTON')"
@@ -15545,7 +15624,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,3)"
 		ScaleToClip
-		area 1031 441 409 75
+		area 1495 441 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('CREDITS_BUTTON')"
@@ -15560,7 +15639,7 @@ menu
 		bam 'RGDMBUT1'
 		sequence lua "rgGetHighlightSkin(rgMainButtHighlight,4)"
 		ScaleToClip
-		area 1031 516 409 75
+		area 1495 516 409 75
 		pad 10 8 10 8
 		text style "button"
 		text lua "rgString('BACK_BUTTON')"
@@ -15677,7 +15756,7 @@ menu
 	label
 	{
 		name 'rgmainmenuversionopt'
-		area 1031 811 409 41
+		area 1495 785 409 41
 		text style "normal"
 		text align center center
 		text lua "CBaldurChitin:GetVersionString()"
@@ -23899,7 +23978,7 @@ menu
 	--}
 	button
 	{
-		enabled "RgUISkin < 3"
+		enabled "RgUISkin < 3 and rgIsTabletRatio() == false"
 		on escape
 		area 1290 7 42 42
 		bam rgdbtcls
@@ -23915,6 +23994,20 @@ menu
 		enabled "RgUISkin == 3"
 		on escape
 		area 1259 30 42 42
+		bam rgdbtcls
+		sequence lua "RgUISkin"
+		ScaleToClip
+		action
+		"
+			storeScreen:OnMainDoneButtonClick()
+		"
+	}
+	
+	button
+	{
+		enabled "RgUISkin < 3 and rgIsTabletRatio() == true"
+		on escape
+		area 1245 30 42 42
 		bam rgdbtcls
 		sequence lua "RgUISkin"
 		ScaleToClip
@@ -31157,7 +31250,7 @@ menu
 	{
 		name 'messagesRect'
 		enabled "RgMessageboxUnlocked == 0 and RgIsModernHud == 0"
-		area 0 0 0 -5
+		area 0 0 664 200
 		--area 0 0 664 200
 		--rectangle 2
 		mosaic lua "rgGetMessageBoxBackgroundA()"
@@ -31214,7 +31307,7 @@ menu
 		--enabled "RgIsModernHud == 0"
 		enabled "RgMessageboxUnlocked == 0 and RgIsModernHud == 0"
 		name "worldMessageBox"
-		area 0 12 0 0
+		area 12 12 640 176
 		--area 12 12 640 176
 		rowheight dynamic
 		table "combatLog"
@@ -31227,7 +31320,7 @@ menu
 	{
 		name 'messagesHandleY'
 		enabled "RgMessageboxUnlocked == 0 and RgIsModernHud == 0"
-		area 0 0 0 0
+		area 0 0 664 10
 		--area 0 0 664 10
 		--bam RGDMBCG4
 		--ScaleToClip
@@ -31806,7 +31899,7 @@ menu
 			Infinity_PushMenu('WORLD_DIALOG_RIGHT')
 		end
 		Infinity_PopMenu('LEFT_SIDEBAR')
-		Infinity_PopMenu('RIGHT_SIDEBAR_BOTTOM')
+		Infinity_PopMenu('RIGHT_SIDEBAR')
 		--local screenWidth, screenHeight = Infinity_GetScreenSize()
 		--Infinity_SetArea('rgDialogLeftCorner',((1978-screenWidth)/2)-5,nil,nil,nil)
 		--Infinity_SetArea('rgDialogRightCorner',(1978-(1978-screenWidth)/2)-85,nil,nil,nil)
@@ -31828,7 +31921,7 @@ menu
 		Infinity_PopMenu('WORLD_DIALOG_LEFT')
 		Infinity_PopMenu('WORLD_DIALOG_RIGHT')
 		Infinity_PushMenu('LEFT_SIDEBAR')
-		Infinity_PushMenu('RIGHT_SIDEBAR_BOTTOM')
+		Infinity_PushMenu('RIGHT_SIDEBAR')
 		ungreySidebars()
 		if rgDialogLoad == 1 then
 			rgDialogLoadCount = 0
@@ -32234,7 +32327,9 @@ menu
 		text style "button"
 		action 
 		"
-			if(gameOptions.m_bConfirmDialog == true and (#worldPlayerDialogChoices > 0)) then
+			if(isTouchActionbar() and not dialogViewMode and not showDialogButtonChoices()) then
+				onDialogButtonClick()
+			elseif(gameOptions.m_bConfirmDialog == true and (#worldPlayerDialogChoices > 0)) then
 				-- if confirm dialog and choices available.
 				worldScreen:OnDialogReplyClick(worldPlayerDialogChoices[worldPlayerDialogSelection].marker)
 				worldPlayerDialogSelection = 0
@@ -32244,6 +32339,7 @@ menu
 			end
 		"
 	}
+	
 }
 	
 menu
@@ -39729,7 +39825,7 @@ menu
 	button
 	{
 		area 528 660 310 70
-		bam		rgdbutm1
+		bam		rgdmbut2
 		sequence lua "RgUISkin"
 		ScaleToClip
 		pad 10 8 10 8
@@ -39740,7 +39836,7 @@ menu
 	button
 	{
 		area 100 660 428 70
-		bam		rgdbutm1
+		bam		rgdmbut2
 		sequence lua "RgUISkin"
 		ScaleToClip
 		pad 10 8 10 8
@@ -41354,7 +41450,7 @@ menu
 	label
 	{
 		name 'rgdmmenu1'
-		area 0 0 646 645
+		area 0 0 842 626
 		bam "RGDMENU1"
 		ScaleToClip
 		sequence lua "rgGetTitleFrame()"
@@ -41363,7 +41459,7 @@ menu
 	label
 	{
 		name 'rgdmmenu2'
-		area 442 0 646 645
+		area 576 0 842 626
 		bam "RGDMENU1"
 		ScaleToClip
 		sequence lua "rgGetTitleFrame()"
@@ -41372,7 +41468,7 @@ menu
 	label
 	{
 		name 'rgdmmenu3'
-		area 884 0 646 645
+		area 1152 0 842 626
 		bam "RGDMENU1"
 		ScaleToClip
 		sequence lua "rgGetTitleFrame()"
@@ -41381,7 +41477,7 @@ menu
 	label
 	{
 		name 'rgdmmenu4'
-		area 0 608 646 252
+		area 0 590 842 244
 		bam "RGDMENU1"
 		ScaleToClip
 		sequence lua "rgGetTitleFrame()"
@@ -41390,7 +41486,7 @@ menu
 	label
 	{
 		name 'rgdmmenu5'
-		area 442 608 646 252
+		area 576 590 842 244
 		bam "RGDMENU1"
 		ScaleToClip
 		sequence lua "rgGetTitleFrame()"
@@ -41399,7 +41495,7 @@ menu
 	label
 	{
 		name 'rgdmmenu6'
-		area 884 608 646 252
+		area 1152 590 842 244
 		bam "RGDMENU1"
 		ScaleToClip
 		sequence lua "rgGetTitleFrame()"
@@ -48036,7 +48132,7 @@ menu
 	label
 	{
 		area 0 0 80 1536
-		mosaic GUIWLSP
+		--mosaic GUIWLSP
 	}
 }
 menu
@@ -48045,11 +48141,11 @@ menu
 	align left center
 	ignoreEsc
 	--ignoreFocus 1
-	label
-	{
-		area 0 0 85 780
-		rectangle 4
-	}
+	--label
+	--{
+	--	area 0 0 85 780
+	--	rectangle 4
+	--}
 	button
 	{
 		area 15 25 54 54
@@ -48237,7 +48333,7 @@ menu
 	label
 	{
 		area 0 0 80 1536
-		mosaic GUIWRSP
+		--mosaic GUIWRSP
 	}
 }
 menu
@@ -48247,11 +48343,11 @@ menu
 	ignoreEsc
 	--ignoreFocus 1
 	enabled "canShowDialogButton(11)"
-	label
-	{
-		area 0 0 85 780
-		rectangle 4
-	}
+	--label
+	--{
+	--	area 0 0 85 780
+	--	rectangle 4
+	--}
 	button
 	{
 		area 15 25 54 54
@@ -49947,6 +50043,11 @@ menu
 }
 `
 function rgSetMenubarArea()
+	local w, h = Infinity_GetScreenSize()
+	local r = 0
+	if w < 1360 then
+		r = 45
+	end
 	Infinity_SetArea('rgmenubackg1',0,0,1365,1)
 	Infinity_SetArea('rgmenubackg2',0,0,1,768)
 	Infinity_SetArea('rgmenubutton1',423,30,58,54)
@@ -49963,7 +50064,7 @@ function rgSetMenubarArea()
 		Infinity_SetArea('rgmenubuttclose',1259,26,42,42)
 	else
 		Infinity_SetArea('rgmenubutton9',1147,32,54,50)
-		Infinity_SetArea('rgmenubuttclose',1290,7,42,42)
+		Infinity_SetArea('rgmenubuttclose',1290-r,7,42,42)
 	end
 	
 	if e:GetActiveEngine() == characterScreen then
@@ -49979,7 +50080,7 @@ function rgSetMenubarArea()
 	elseif e:GetActiveEngine() == optionsScreen then
 		Infinity_SetArea('flames4',813,10,70,76)
 	elseif e:GetActiveEngine() == mapScreen then
-		local w, h = Infinity_GetScreenSize()
+		
 		local top = (h-768)/2
 		Infinity_SetArea('flames4',417,-top,70,76)
 		Infinity_SetArea('rgmenubutton1',423,12-top,58,54)
@@ -50924,12 +51025,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 106 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(1)"
+		sequence lua "RgUISkin"
 		text "GAMEPLAY_BUTTON"
 		action 
 		"
@@ -50939,12 +51040,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 186 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(2)"
+		sequence lua "RgUISkin"
 		text "GRAPHICS_BUTTON"
 		action 
 		"
@@ -50954,12 +51055,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 266 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(3)"
+		sequence lua "RgUISkin"
 		text "SOUND_BUTTON"
 		action 
 		"
@@ -50969,12 +51070,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 346 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(4)"
+		sequence lua "RgUISkin"
 		text "FEEDBACK_BUTTON"
 		action 
 		"
@@ -50984,12 +51085,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 426 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(5)"
+		sequence lua "RgUISkin"
 		text "AUTO_PAUSE_BUTTON"
 		action 
 		"
@@ -50999,12 +51100,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 506 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(6)"
+		sequence lua "RgUISkin"
 		text "ASSIGN_KEYS_BUTTON"
 		clickable lua "not e:IsTouchUI()"
 		action 
@@ -51015,12 +51116,12 @@ menu
 	}
 	button
 	{
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 586 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(7)"
+		sequence lua "RgUISkin"
 		text "RG_UI_SETTINGS"
 		action 
 		"
@@ -51031,12 +51132,12 @@ menu
 	button
 	{
 		enabled "rgOptLang == 1"
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 666 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(8)"
+		sequence lua "RgUISkin"
 		text "LANGUAGE_BUTTON"
 		action 
 		"
@@ -51047,12 +51148,12 @@ menu
 	button
 	{
 		enabled "rgOptLang == 1"
-		bam		rgdmbut1
+		bam		rgdmbut2
 		ScaleToClip
 		area 100 26 300 80
 		pad 10 8 10 8
 		text style "button"
-		sequence lua "rgGetOptionsbarGlow(9)"
+		sequence lua "RgUISkin"
 		text lua "t('CREDITS_TITLE') .. ' & ' .. t('MOVIES_TITLE')"
 		action 
 		"
