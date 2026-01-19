@@ -8856,12 +8856,13 @@ menu
 			local w, h = Infinity_GetScreenSize()
 			local sw = 0 - w + 78
 			local sh = h - 118
-			Infinity_SetArea('rgModHudPortrait1',sw+1,sh,78,118)
-			Infinity_SetArea('rgModHudPortrait2',sw+83,sh,78,118)
-			Infinity_SetArea('rgModHudPortrait3',sw+165,sh,78,118)
-			Infinity_SetArea('rgModHudPortrait4',sw+247,sh,78,118)
-			Infinity_SetArea('rgModHudPortrait5',sw+329,sh,78,118)
-			Infinity_SetArea('rgModHudPortrait6',sw+411,sh,78,118)
+			local shift = 8 + 1
+			Infinity_SetArea('rgModHudPortrait1',shift+sw+1,sh,78,118)
+			Infinity_SetArea('rgModHudPortrait2',shift+sw+83,sh,78,118)
+			Infinity_SetArea('rgModHudPortrait3',shift+sw+165,sh,78,118)
+			Infinity_SetArea('rgModHudPortrait4',shift+sw+247,sh,78,118)
+			Infinity_SetArea('rgModHudPortrait5',shift+sw+329,sh,78,118)
+			Infinity_SetArea('rgModHudPortrait6',shift+sw+411,sh,78,118)
 		else
 			Infinity_SetArea('rgModHudPortrait1',0,0,0,118)
 			Infinity_SetArea('rgModHudPortrait2',0,0,0,118)
